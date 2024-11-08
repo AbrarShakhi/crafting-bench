@@ -71,6 +71,6 @@
 #include <valarray>
 
 // C++20 and Later
-#include <concepts>
-#include <ranges>
-#include <span>
+//#include <concepts>
+//#include <ranges>
+//#include <span>

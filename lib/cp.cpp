@@ -17,10 +17,17 @@
 #include "../lib/timer.h"
 #define TOTAL_TIMER ScopedTimer total_time("Total Time")
 #define TESTCASE_TIMER ScopedTimer testcase_time("Testcase Time")
+void redirect_inputstream(const char* inf) {
+    if (!freopen(inf, "r", stdin)) {
+        perror("[redirect_istream()]: can not open input.txt file in 'r' mode\n");
+        exit(-33);
+    }
+}
 #else
 #define dbg(...)
 #define TOTAL_TIMER
 #define TESTCASE_TIMER
+#define redirect_inputstream(...)
 #endif // AbrarShakhi
 
 #define DIVFLOOR(x, y) ((x+y-1) / y)
@@ -30,7 +37,7 @@
 #define MAX(a, b) (((b) > (a)) ? (b) : (a))
 #define MIN(a, b) (((b) > (a)) ? (a) : (b))
 #define ABSDIF(a, b) (((b) > (a)) ? (b) - (a) : (a) - (b))
-#define LOOP(i, n) for (int i = 0; i < n; i++)
+#define LOOP(i, n) for (int64_t i = 0; i < (int64_t)n; i++)
 
 template<typename typC, typename typD> std::istream& operator>>(std::istream& cin, std::pair<typC, typD>& a) {
     return cin >> a.first >> a.second;
@@ -65,12 +72,13 @@ inline auto solve() {
 int32_t main() {
     std::cin.tie(0)->sync_with_stdio(0);
     std::cin.exceptions(std::cin.failbit);
+    redirect_inputstream("input.txt");
     TOTAL_TIMER;
     uint32_t T = 1;
     std::cin >> T;
     while (T--) {
-        solve();
-        //std::cout << solve() << LN;
-        //std::cout << ((solve()) ? "YES" : "NO") << LN;
+        //solve();
+        //std::cout << solve() << '\n';
+        //std::cout << ((solve()) ? "YES" : "NO") << '\n';
     }
 }

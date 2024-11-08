@@ -62,7 +62,7 @@ void redirect_inputstream(const char *inf) {
 #define MEGA 1000000
 
 const char* inputfile = "input.txt";
-const char* csvfile = "csv.txt";
+const char* csvfile = "runtime_output.csv";
 char csv_status[20];
 
 const size_t N = 10 * KILO;
