@@ -1,5 +1,4 @@
-
-#ifdef _MSC_VER
+#ifdef _MSC_VER // If using Visual Studio IDE
 #pragma warning(disable : 4996)
 #include "../lib/stdc++.h"
 #define ARRAY(type, name, len) auto name = (type*)_alloca(len * sizeof(type)); if (!name) exit(-99)
@@ -18,10 +17,33 @@
 #define dbg(...)
 #endif // AbrarShakhi
 
+/* ======================================================== HELPER FUNCTIONS ========================================================== */
+void gen_input(const char* inputFilename, int n) {
+	//srand(time(0));
+	std::ofstream of(inputFilename);
+	if (!of.is_open()) {
+		perror("[gen_input()]: can not open input.txt file in 'w' mode\n");
+		exit(-33);
+	}
+	// of << n << '\n';
+	while (n--) of << rand() % 1000 << ' ';
+	of.close();
+}
+
+void redirect_inputstream(const char* inf) {
+	if (!freopen(inf, "r", stdin)) {
+		perror("[redirect_istream()]: can not open input.txt file in 'r' mode\n");
+		exit(-33);
+	}
+}
+
 class Timer {
+	FILE* ofd;
+	const char* status;
+	std::chrono::time_point<std::chrono::high_resolution_clock> start_time_point;
 public:
-	Timer(const char *p_status, FILE *output_stream):
-		status(p_status), of(output_stream) {
+	Timer(FILE* output_fd, const char* p_status) :
+		ofd(output_fd), status(p_status) {
 		start_time_point = std::chrono::high_resolution_clock::now();
 	}
 	~Timer() {
@@ -30,65 +52,41 @@ public:
 		auto end = std::chrono::time_point_cast<std::chrono::microseconds>(end_time_point).time_since_epoch().count();
 		auto duration = end - start;
 		auto ms = duration * 0.001;
-		fprintf(of, "%s,%lf\n", status, ms);
+		fprintf(ofd, "%s,%lf\n", status, ms);
 	}
-private:
-	FILE* of;
-	const char* status;
-	std::chrono::time_point<std::chrono::high_resolution_clock> start_time_point;
 };
+/* ============================================================= END ================================================================== */
 
+#define N (int64_t)1000
 
-void gen_input(const char* f, int n) {
-	std::ofstream of(f);
-	if (!of.is_open()) {
-		perror("[gen_input()]: can not open input.txt file in 'w' mode\n");
-		exit(-33);
-	}
-	of << n << '\n';
-	while (n--)
-		of << rand() % 1000 << ' ';
-	of.close();
-}
-
-void redirect_inputstream(const char *inf) {
-	if (!freopen(inf, "r", stdin)) {
-		perror("[redirect_istream()]: can not open input.txt file in 'r' mode\n");
-		exit(-33);
-	}
-}
-
-#define KILO 1000
-#define MEGA 1000000
-
-const char* inputfile = "input.txt";
-const char* csvfile = "runtime_output.csv";
-char csv_status[20];
-
-const size_t N = 10 * KILO;
-
-// ARRAY(int, arr, n)
-inline auto sln() {
-}
 
 int main() {
 	std::cin.tie(0)->sync_with_stdio(0);
 	std::cin.exceptions(std::cin.failbit);
 
-	//gen_input(inputfile, N);
-	FILE* csvp = fopen(csvfile, "w");
-	//redirect_inputstream(inputfile);
-	
-	//fprintf(csvp, "Algorithm,%s\n", );
-	//fprintf(csvp, "Number of elements,Runtime\n");
-	for (size_t n = KILO; n < N; n += KILO) {
-		sprintf(csv_status, "%zu", n);
+	const char* input_filename = "input.txt";
+	const char* csv_filename = "runtime_output.csv";
+	char status[30];
+
+	gen_input(input_filename, N);
+	redirect_inputstream(input_filename);
+
+	FILE* csvfd = fopen(csv_filename, "w");
+	fprintf(csvfd, "Algorithm,%s\n", "Quick+Insertion Sort");
+	fprintf(csvfd, "Total elements,Insertions Boundery,Runtime (ms)\n");
+
+	for (int64_t n = 1024; n >= 0; n /= 2) {
+		rewind(stdin);
+		ARRAY(int64_t, arr, N);
+		for (int64_t i = 0; i < N; i++) {
+			scanf("%lld", arr + i);
+		}
 		{
-			//Timer t(fmt, csvp);
-
-
+			sprintf(status, "%lld,%lld", N, n);
+			Timer t(csvfd, status);
+			// Actual Algorithm
 		}
 	}
 
-	fclose(csvp);
+	fclose(csvfd);
 }
