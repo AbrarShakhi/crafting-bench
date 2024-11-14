@@ -1,13 +1,17 @@
 .out
 .vs
+.vscode
+**/.vscode
 **.vcxproj
 **.vcxproj.**
+**/Makefile
 
 **.sln
 **/**.o
 **/**.obj
 **/**.exe
 **/**.out
+**/**.csv
 
 class/**.cpp
 class/**.c
