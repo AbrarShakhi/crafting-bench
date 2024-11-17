@@ -47,10 +47,10 @@ public:
 		start_time_point = std::chrono::high_resolution_clock::now();
 	}
 	~Timer() {
-		auto end_time_point = std::chrono::high_resolution_clock::now();
-		auto start = std::chrono::time_point_cast<std::chrono::microseconds>(start_time_point).time_since_epoch().count();
-		auto end = std::chrono::time_point_cast<std::chrono::microseconds>(end_time_point).time_since_epoch().count();
-		auto duration = end - start;
+		auto duration = std::chrono::
+			duration_cast<std::chrono::microseconds>(
+				std::chrono::high_resolution_clock::now() - start_time_point
+			).count();
 		auto ms = duration * 0.001;
 		fprintf(ofd, "%s,%lf\n", status, ms);
 	}
@@ -59,19 +59,11 @@ public:
 
 #define N (int64_t)1000
 
+const char* input_filename = "input.txt";
+const char* csv_filename = "runtime_output.csv";
+char status[30];
 
-int main() {
-	std::cin.tie(0)->sync_with_stdio(0);
-	std::cin.exceptions(std::cin.failbit);
-
-	const char* input_filename = "input.txt";
-	const char* csv_filename = "runtime_output.csv";
-	char status[30];
-
-	gen_input(input_filename, N);
-	redirect_inputstream(input_filename);
-
-	FILE* csvfd = fopen(csv_filename, "w");
+inline void solve(FILE* csvfd) {
 	fprintf(csvfd, "Algorithm,%s\n", "Quick+Insertion Sort");
 	fprintf(csvfd, "Total elements,Insertions Boundery,Runtime (ms)\n");
 
@@ -87,6 +79,18 @@ int main() {
 			// Actual Algorithm
 		}
 	}
+}
+
+int main() {
+	std::cin.tie(0)->sync_with_stdio(0);
+	std::cin.exceptions(std::cin.failbit);
+
+	gen_input(input_filename, N);
+	redirect_inputstream(input_filename);
+
+	FILE* csvfd = fopen(csv_filename, "w");
+
+	solve();
 
 	fclose(csvfd);
 }
