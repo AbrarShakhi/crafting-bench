@@ -1,6 +1,6 @@
 workspace "craftingbench"
    architecture "x64"
-   startproject "algo"
+   startproject "class"
    configurations { "debug", "final", "submit"}
    kind "ConsoleApp"
 
@@ -25,4 +25,4 @@ workspace "craftingbench"
 
 include "cp/cp.lua"
 include "class/class.lua"
-include "lib/lib.lua"
+include "snippet/snippet.lua"
