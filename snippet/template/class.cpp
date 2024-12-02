@@ -25,10 +25,10 @@ public:
 	float elapsedMillis() const { return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - m_Start).count() * 0.001f; }
 };
 
-std::mt19937 mt_rng(std::chrono::steady_clock::now().time_since_epoch().count());
-template<typename T>
-auto randint(T a, T b) {
-	return std::uniform_int_distribution<T>(a, b)(mt_rng);
+std::mt19937 mersenne_twister_engine(std::chrono::steady_clock::now().time_since_epoch().count());
+template<class T=int>
+T randint(T a, T b) {
+	return std::uniform_int_distribution<T>(a, b)(mersenne_twister_engine);
 }
 
 class Csv {

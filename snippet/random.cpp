@@ -1,8 +1,18 @@
 #include <chrono>
 #include <random>
 
-std::mt19937 mt_rng(std::chrono::steady_clock::now().time_since_epoch().count());
-template<typename T>
-auto randint(T a, T b) {
+std::default_random_engine default_engine;
+
+auto clock_seed = std::chrono::steady_clock::now().time_since_epoch().count();
+std::random_device rd_seed;
+std::mt19937 mersenne_twister_engine(clock_seed);
+
+template<class T=int>
+T randint(T a, T b) {
 	return std::uniform_int_distribution<T>(a, b)(mt_rng);
+}
+
+template<class T=float>
+T randint(T a, T b) {
+	return std::uniform_real_distribution<T>(a, b)(mt_rng);
 }
