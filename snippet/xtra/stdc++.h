@@ -74,3 +74,10 @@
 //#include <concepts>
 //#include <ranges>
 //#include <span>
+
+#ifdef _MSC_VER // IF USING VISUAL STUDIO IDE 
+#pragma warning(disable : 4996)
+#define ARRAY(t, var, n) auto var = (t*)_alloca(n * sizeof(t)); if (!var) exit(-99)
+#else
+#define ARRAY(t, var, n) t var[n]; if (!var) exit(-99)
+#endif // _MSC_VER

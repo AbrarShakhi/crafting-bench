@@ -34,3 +34,6 @@ public:
         return timer.elapsedMillis();
     }
 };
+
+#define TOTAL_TIMER ScopedTimer total_time("Total Time")
+#define TESTCASE_TIMER ScopedTimer testcase_time("Testcase Time")

@@ -1,5 +1,7 @@
 #pragma once
 
+void REDIRECT_IO(const char* a) {}
+
 #ifndef _MSC_VER
 
 #include <iostream>
@@ -56,7 +58,7 @@ template <typename T, typename... V> void _debug_print(T t, V... v) {
   _debug_print(v...);
 }
 
-#define db(x...)                                                              \
+#define DB(x...)                                                              \
   std::cerr << "\e[93m" << __func__ << ":" << __LINE__ << " [" << #x           \
             << "] = [";                                                        \
 _debug_print(x);                                                               \
