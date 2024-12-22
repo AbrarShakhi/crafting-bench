@@ -25,11 +25,13 @@ files=(
     class/**.txt
     class/**.h
     class/**.hpp
+    class/**.py
     cp/*.cpp
     cp/*.c
     cp/*.txt
     cp/*.h
     cp/*.hpp
+    cp/**.py
 )
 
 for file in "${files[@]}"

@@ -29,6 +29,7 @@ class Csv {
 	std::ofstream stream;
 	bool isConsoleMode;
 	void writeCell() {}
+	void newRow() { isConsoleMode ? std::cout << '\n' : stream << '\n'; }
 public:
 	Csv() : isConsoleMode(true) {}
 	Csv(const char* filename) : isConsoleMode(false) {
@@ -36,30 +37,22 @@ public:
 		if (!stream.is_open()) exit(-55);
 	}
 	~Csv() { if (!isConsoleMode) stream.close(); }
-	void newRow() {
-		if (isConsoleMode) std::cout << '\n';
-		else stream << '\n';
-	}
+	auto& getWritter() { return isConsoleMode ? std::cout : stream; }
+	void newEmptyRow() { isConsoleMode ? std::cout << ",\n" : stream << ",\n"; }
 	template <typename T, typename... Args>
 	void newRow(T&& arg, Args&&... args) {
-		if (isConsoleMode) std::cout << arg << ',';
-		else stream << arg << ',';
+		isConsoleMode ? std::cout << arg << ',' : stream << arg << ',';
 		newRow(std::forward<Args>(args)...);
 	}
-	void newCell() {
-		if (isConsoleMode) std::cout << ',';
-		else stream << ',';
-	}
+	void newCell() { isConsoleMode ? std::cout << ',' : stream << ','; }
 	template <typename T, typename... Args>
 	void newCell(T&& arg, Args&&... args) {
-		if (isConsoleMode) std::cout << arg << ' ';
-		else stream << arg << ' ';
-		newRow(std::forward<Args>(args)...);
+		isConsoleMode ? std::cout << arg << ' ' : stream << arg << ' ';
+		newCell(std::forward<Args>(args)...);
 	}
 	template <typename T, typename... Args>
 	void writeCell(T&& arg, Args&&... args) {
-		if (isConsoleMode) std::cout << arg << ' ';
-		else stream << arg << ' ';
+		isConsoleMode ? std::cout << arg << ' ' : stream << arg << ' ';
 		writeCell(std::forward<Args>(args)...);
 	}
 };
